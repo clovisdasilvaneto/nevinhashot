@@ -1343,19 +1343,19 @@ const MAPS = [
 ];
 const BOSSES = {
   mower: { name: 'Mega Mower', emblem: '🚜', desc: 'A giant grumpy lawn mower! It CHARGES across the grass and calls robot friends. Step out of the red lanes!',
-    cfg: { model: 'mower', hp: 70, speed: 4, score: 5000, coins: 150 },
+    cfg: { model: 'mower', hp: 90, speed: 4, score: 5000, coins: 150 },
     attacks: { charge: { every: 7 }, barrage: { every: 5, shots: 5 }, mortar: { every: 9, count: 4 }, minions: { every: 14, n: 2, max: 4, type: 'roller' } }, escorts: ['roller', 'roller'] },
   crusher: { name: 'Snow Crusher', emblem: '🔨', desc: 'Big hammer fists and freezing shots that slow you down! When it JUMPS, run out of the red circle!',
-    cfg: { model: 'crusher', hp: 95, speed: 4.5, frost: true, score: 6000, coins: 180 },
+    cfg: { model: 'crusher', hp: 120, speed: 4.5, frost: true, score: 6000, coins: 180 },
     attacks: { jump: { every: 7 }, barrage: { every: 5, shots: 5 }, ring: { every: 9, shots: 14 } }, escorts: ['shooter', 'roller'] },
   yeti: { name: 'Yeti-Bot 3000', emblem: '🏔️', desc: 'King of Frosty Peaks! Jump slams, freezing blasts, snow bombs and robot helpers.',
-    cfg: { model: 'yeti', hp: 150, speed: 4, frost: true, score: 10000, coins: 300 },
+    cfg: { model: 'yeti', hp: 180, speed: 4, frost: true, score: 10000, coins: 300 },
     attacks: { jump: { every: 8 }, barrage: { every: 5.5, shots: 7 }, mortar: { every: 8, count: 5 }, ring: { every: 10, shots: 16 }, minions: { every: 15, n: 2, max: 4, type: 'shooter' } }, escorts: ['shooter', 'roller'] },
   magma: { name: 'Magma Tank', emblem: '🔥', desc: 'Its fire shots set you ablaze and its lava bombs never stop. Keep moving!',
-    cfg: { model: 'magma', hp: 160, speed: 3.5, fire: true, score: 9000, coins: 260 },
+    cfg: { model: 'magma', hp: 190, speed: 3.5, fire: true, score: 9000, coins: 260 },
     attacks: { barrage: { every: 5, shots: 7 }, mortar: { every: 6.5, count: 5 }, ring: { every: 9, shots: 16 }, minions: { every: 15, n: 2, max: 3, type: 'buzzer' } }, escorts: ['tank'] },
   dragon: { name: 'Robo Dragon', emblem: '🐉', desc: 'The mighty Grumble King! Fire breath, flying slams and robot helpers. Dodge the red circles!',
-    cfg: { model: 'dragon', hp: 220, speed: 4.5, fire: true, score: 20000, coins: 500 },
+    cfg: { model: 'dragon', hp: 260, speed: 4.5, fire: true, score: 20000, coins: 500 },
     attacks: { breath: { every: 6, shots: 14 }, jump: { every: 8 }, ring: { every: 9, shots: 18 }, mortar: { every: 7, count: 5 }, minions: { every: 16, n: 3, max: 4, type: 'buzzer' } }, escorts: ['buzzer', 'buzzer'] },
 };
 function mapStages(m) {
@@ -1653,7 +1653,7 @@ class Bot {
     // boss animations
     if (P.wheels) P.wheels.forEach(w => { w.rotation.x += sp * dt / 1.05; });
     if (P.blade) P.blade.rotation.y += dt * (8 + sp);
-    if (P.exhaust && Math.random() < dt * 8) { P.exhaust.getWorldPosition(tmpV2); tmpV2.y += 1.2; smoke.spawn(tmpV2, tmpV.set(rand(-.5, .5), rand(2, 3), rand(-.5, .5)), 1.6, 0.4, 1.3, 0x555555, -0.5, 0.6); }
+    if (P.exhaust && Math.random() < dt * 8) { P.exhaust.getWorldPosition(tmpV2); tmpV2.y += 1.2; smoke.spawn(tmpV2, tmpV.set(rand(-.5, .5), rand(2, 3), rand(-.5, .5)), 1.2, 0.25, 0.7, 0x9a9a9a, -0.5, 0.6); }
     if (P.chimney && Math.random() < dt * 10) { P.chimney.getWorldPosition(tmpV2); tmpV2.y += 1.2; glow.spawn(tmpV2, tmpV.set(rand(-1, 1), rand(3, 6), rand(-1, 1)), 1, 0.3, 0.05, 0xff8a1f, 1, 0.3); }
     if (P.arms) P.arms.forEach((a, i) => { a.rotation.x = Math.sin(this.walk * 0.8 + i * Math.PI) * 0.5 - (this.windup || 0) * 1.6; });
     if (P.legs && P.arms) P.legs.forEach((l, i) => { l.rotation.x = Math.sin(this.walk * 0.8 + i * Math.PI) * 0.4; });
@@ -3498,7 +3498,7 @@ function updateCamera(dt) {
   let desired, look, speed = 3;
   if (state === 'yard') {
     const a = time * 0.3;
-    desired = tmpV.set(p.pos.x + Math.sin(a) * 5.4, 2.4, p.pos.z + Math.cos(a) * 5.4);
+    desired = tmpV.set(p.pos.x + Math.sin(a) * 6.8, 2.7, p.pos.z + Math.cos(a) * 6.8);
     look = tmpV2.set(p.pos.x, 1.25, p.pos.z);
   } else if (state === 'maps') {
     desired = tmpV.copy(boardLook).add(tmpV2.set(0, boardH * 0.92, boardH * 0.42));
@@ -3509,7 +3509,7 @@ function updateCamera(dt) {
     look = tmpV2.set(0, 2.2, 0);
   } else {
     // tilted top-down view, peeking a little toward where you aim
-    const H = (portrait() ? 32 : 23) * zoom, D = (portrait() ? 16 : 14) * zoom;
+    const H = (portrait() ? 27 : 27) * zoom, D = (portrait() ? 13 : 15) * zoom;
     let lx = 0, lz = 0;
     if (aimValid && !document.body.classList.contains('touch')) {
       lx = aim.x - p.pos.x; lz = aim.z - p.pos.z;
